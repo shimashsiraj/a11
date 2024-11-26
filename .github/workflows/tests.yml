@@ -11,29 +11,29 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Updated version for better performance and security
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.10'  # Pin specific version
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt || echo "No requirements file"
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi  # Simplifies check
 
-      - name: Run test 1 (10 numbers)
+      - name: Run Test 1 (10 numbers)
         run: |
           python find_lowest_number.py test_data/test1_input.txt test_data/test1_output.txt
-          diff test_data/test1_output.txt test_data/test1_expected.txt || exit 1
+          diff test_data/test1_output.txt test_data/test1_expected.txt
 
-      - name: Run test 2 (1 number)
+      - name: Run Test 2 (1 number)
         run: |
           python find_lowest_number.py test_data/test2_input.txt test_data/test2_output.txt
-          diff test_data/test2_output.txt test_data/test2_expected.txt || exit 1
+          diff test_data/test2_output.txt test_data/test2_expected.txt
 
-      - name: Run test 3 (blank file)
+      - name: Run Test 3 (blank file)
         run: |
           python find_lowest_number.py test_data/test3_input.txt test_data/test3_output.txt
-          diff test_data/test3_output.txt test_data/test3_expected.txt || exit 1
+          diff test_data/test3_output.txt test_data/test3_expected.txt
