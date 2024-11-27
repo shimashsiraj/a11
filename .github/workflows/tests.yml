@@ -1,39 +1,30 @@
-name: Python Tests
-
-on:
-  push:
-    branches:
-      - main
+name: Automated Test
+on: [push]
 
 jobs:
-  test:
+  automated_test:
+    name: Automated Test
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3
         uses: actions/setup-python@v3
         with:
-          python-version: '3'
+          python-version: "3"
 
-      - name: Install dependencies
+      - name: Run Test Case 1 (10 numbers)
         run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi  # Simplifies check
+          python3 find_lowest_number.py test_data/test1_input.txt test1_output.txt
+          diff test_data/test1_expected.txt test1_output.txt
 
-      - name: Run Test 1 (10 numbers)
+      - name: Run Test Case 2 (1 number)
         run: |
-          python3 find_lowest_number.py test_data/test1_input.txt test_data/test1_output.txt
-          diff test_data/test1_output.txt test_data/test1_expected.txt
+          python3 find_lowest_number.py test_data/test2_input.txt test2_output.txt
+          diff test_data/test2_expected.txt test2_output.txt
 
-      - name: Run Test 2 (1 number)
+      - name: Run Test Case 3 (blank file)
         run: |
-          python3 find_lowest_number.py test_data/test2_input.txt test_data/test2_output.txt
-          diff test_data/test2_output.txt test_data/test2_expected.txt
-
-      - name: Run Test 3 (blank file)
-        run: |
-          python3 find_lowest_number.py test_data/test3_input.txt test_data/test3_output.txt
-          diff test_data/test3_output.txt test_data/test3_expected.txt
+          python3 find_lowest_number.py test_data/test3_input.txt test3_output.txt
+          diff test_data/test3_expected.txt test3_output.txt
